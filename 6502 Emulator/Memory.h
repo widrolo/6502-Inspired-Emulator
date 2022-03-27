@@ -22,8 +22,8 @@ struct Memory
 
 	Byte LoadInstruction(Word& PC)
 	{
-		PC--;
-		return data[PC + 1];
+		PC++;
+		return data[PC - 1];
 	}
 
 	void Clear()

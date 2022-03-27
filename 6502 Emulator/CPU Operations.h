@@ -7,10 +7,10 @@ Word MakeWord(Word& PC, Memory& mem)
 	Byte buffer[2];
 	for (int i = 0; i < 2; i++) {
 		buffer[i] = mem.LoadByte(PC);
-		PC--;
+		PC++;
 	}
 
-	return CombineBytes(buffer[0], buffer[1]);
+	return CombineBytes(buffer[1], buffer[0]);
 }
 
 /// <summary>
@@ -36,7 +36,7 @@ void RegisterLoad(Byte& reg, Word& PC, Memory& mem, Byte(&statuses)[7], Byte typ
 		break;
 	}
 	if (type != 2)
-		PC--;
+		PC++;
 
 	if (reg == 0x00)
 		statuses[1] = 1;

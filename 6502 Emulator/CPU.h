@@ -9,7 +9,7 @@
 struct CPU
 {
 	Word PC; // Program Counter
-	Byte SP; // Stack Pointer
+	Word SP; // Stack Pointer
 
 	Byte RA, RX, RY; // Registers
 
@@ -85,32 +85,32 @@ struct CPU
 		case INST_STA_ZP:
 		{
 			mem.SetByte(CombineBytes(0x00, mem.LoadByte(PC)), RA);
-			PC--;
+			PC++;
 		}break;
 		case INST_STX_ZP:
 		{
 			mem.SetByte(CombineBytes(0x00, mem.LoadByte(PC)), RX);
-			PC--;
+			PC++;
 		}break;
 		case INST_STY_ZP:
 		{
 			mem.SetByte(CombineBytes(0x00, mem.LoadByte(PC)), RY);
-			PC--;
+			PC++;
 		}break;
 		case INST_STA_ABS:
 		{
 			mem.SetByte(MakeWord(PC, mem), RA);
-			PC--;
+			PC++;
 		}break;
 		case INST_STX_ABS:
 		{
 			mem.SetByte(MakeWord(PC, mem), RX);
-			PC--;
+			PC++;
 		}break;
 		case INST_STY_ABS:
 		{
 			mem.SetByte(MakeWord(PC, mem), RY);
-			PC--;
+			PC++;
 		}break;
 		// Jumps
 		case INST_JSR:
@@ -152,27 +152,27 @@ struct CPU
 			Word location = MakeWord(PC, mem);
 
 			RA = RA + mem.LoadByte(location);
-			PC--;
+			PC++;
 		}break;
 		case INST_SUB:
 		{
 			Word location = MakeWord(PC, mem);
 
 			RA = RA - mem.LoadByte(location);
-			PC--;
+			PC++;
 		}break;
 		//Braches
 		case INST_BEQ:
 		{
 			sByte newOffset = mem.LoadByte(PC);
-			PC--;
+			PC++;
 			if (Z == 1)
 				PC += newOffset;
 		}break;
 		case INST_BNE:
 		{
 			sByte newOffset = mem.LoadByte(PC);
-			PC--;
+			PC++;
 			if (Z == 0)
 				PC += newOffset;
 		}break;

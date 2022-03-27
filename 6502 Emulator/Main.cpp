@@ -4,16 +4,28 @@
 
 void InjectCode(Memory& mem)
 {
-	mem.SetByte(0x0001, 0x0A);
-	mem.SetByte(0xB100, 0x00);
+	mem.SetByte(0xFFFC, INST_JMP);
+	mem.SetByte(0xFFFD, 0xA2);
+	mem.SetByte(0xFFFE, 0xC1);
+	mem.SetByte(0xC1A2, INST_LDA_INTERM);
+	mem.SetByte(0xC1A3, 65);
+	mem.SetByte(0xC1A4, INST_STA_ZP);
+	mem.SetByte(0xC1A5, 0x00);
+	mem.SetByte(0xC1A6, INST_LDX_ZP);
+	mem.SetByte(0xC1A7, 0x00);
+	mem.SetByte(0xFFFC, INST_BNE);
+	mem.SetByte(0xFFFD, 0xB2);
+	mem.SetByte(0xFFFE, 0xC1);
+}
 
-	mem.SetByte(0xFFFC, INST_LDA_ZP);
-	mem.SetByte(0xFFFB, 0x01);
-	mem.SetByte(0xFFFA, INST_LDX_ABS);
-	mem.SetByte(0xFFF9, 0xB1);
-	mem.SetByte(0xFFF8, 0x00);
-	mem.SetByte(0xFFF7, INST_LDY_INTERM);
-	mem.SetByte(0xFFF6, 0x07);
+void DumpCPU(CPU& cpu)
+{
+	std::cout << "\nCPU Dump:\n" << std::endl;
+	std::cout << "Stack Pointer: " << cpu.SP << "\t  0x" << std::hex << cpu.SP << std::endl;
+	std::cout << "Program Counter: " << std::dec << cpu.PC << "\t  0x" << std::hex << cpu.PC << std::endl;
+	std::cout << "Register A: " << std::dec << cpu.RA << std::endl;
+	std::cout << "Register X: " << std::dec << cpu.RX << std::endl;
+	std::cout << "Register Y: " << std::dec << cpu.RY << std::endl;
 }
 
 int main()
@@ -26,5 +38,8 @@ int main()
 	// Execute Instructions
 	while (running)
 		cpu.Run(mem, running);
+
+	//Dumping CPU for analysis
+	DumpCPU(cpu);
 	return 0;
 }
